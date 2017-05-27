@@ -12,7 +12,7 @@ opencv_ml_svm:
       rows: 2
       cols: 1
       dt: i
-      data: [ 0, 1 ]
+      data: [ 1, 2 ]
    sv_total: 1
    support_vectors:
       - [ -2.07362491e-12, -5.11786030e-11, -1.53942987e-11,

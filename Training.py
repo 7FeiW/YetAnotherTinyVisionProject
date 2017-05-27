@@ -3,11 +3,14 @@ import cv2
 import os
 import numpy as np
 
+n_bins = 36
+
 def get_hog(image_path):
-    # load the image and resize it
+    # load the image and does not change it
+    # it will be good to make everything at least close to the same ratio
     image = cv2.imread(image_path, 0)
     # setup hogs
-    n_bins = 36
+    global n_bins
     gx = cv2.Sobel(image, cv2.CV_32F, 1, 0)
     gy = cv2.Sobel(image, cv2.CV_32F, 0, 1)
     mag, ang = cv2.cartToPolar(gx, gy)
@@ -33,12 +36,12 @@ train_list = []
 response_list = []
 
 sub_dir = 'data/Singles/Duke1'
-train_data_temp, responses_temp = fill_train_data(sub_dir, 0)
+train_data_temp, responses_temp = fill_train_data(sub_dir, 1)
 train_list += train_data_temp
 response_list += responses_temp
 
 sub_dir = 'data/Singles/Duke2'
-train_data_temp, responses_temp = fill_train_data(sub_dir, 1)
+train_data_temp, responses_temp = fill_train_data(sub_dir, 2)
 train_list += train_data_temp
 response_list += responses_temp
 
@@ -54,7 +57,7 @@ response_mat = np.array(response_list)[np.newaxis].T
 svm.train(train_mat, cv2.ml.ROW_SAMPLE, response_mat)
 svm.save('svm_data.dat')
 
-hog_hist = np.array(get_hog('data/Singles/Duke1/Duke1-1.png'), np.float32)[np.newaxis]
+hog_hist = np.array(get_hog('data/Singles/Duke1/Duke1-2.png'), np.float32)[np.newaxis]
 print(svm.predict(hog_hist))
-hog_hist = np.array(get_hog('data/Singles/Duke2/Duke2-1.png'), np.float32)[np.newaxis]
+hog_hist = np.array(get_hog('data/Singles/Duke2/Duke2-2.png'), np.float32)[np.newaxis]
 print(svm.predict(hog_hist))
